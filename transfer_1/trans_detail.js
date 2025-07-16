@@ -94,7 +94,7 @@ function showTask(task_num){
   document.getElementById("task_intro").classList.add("hidden");
   document.getElementById("task_list").classList.add("hidden");
   const context = document.getElementById("taskdetail");
-  const text3 = `Task 1：<br><br>
+  const text3 = `Task 3：<br><br>
 You have previously transacted with account
 <span id="text_address" onmouseover="startHover()" onmouseout="endHover()" title="0xe52a132e1d653e3afb17d9c75581efb1b3d40ab7">0xe52a...d40ab7</span>
 (hover over the address can view its full address), <br><br>
