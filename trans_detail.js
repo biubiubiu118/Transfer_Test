@@ -711,10 +711,10 @@ function resetSendForm(modalname) {
 }
 
 // 控制第4题显示
-document.querySelectorAll('input[name="q3"]').forEach(input => {
+document.querySelectorAll('input[name="q4"]').forEach(input => {
   input.addEventListener('change', () => {
-    const showQ4 = input.value === 'yes';
-    document.getElementById('question4').classList.toggle('hidden', !showQ4);
+    const showQ5 = input.value === 'yes';
+    document.getElementById('question5').classList.toggle('hidden', !showQ5);
   });
 });
 
@@ -729,11 +729,13 @@ document.querySelectorAll('input[name="q8"]').forEach(input => {
 function submitQuestionnaire() {
   // 检查必答题是否都有选择
   const requiredRadios = [
-    { name: "q1", label: "Question 1" },
-    { name: "q3", label: "Question 3" },
+    { name: "q2", label: "Question 1" },
+    { name: "q4", label: "Question 3" },
     { name: "q8", label: "Question 8" },
     { name: "q10", label: "Question 10" },
-    { name: "q11", label: "Question 11" }
+    { name: "q11", label: "Question 11" },
+    { name: "q12", label: "Question 12" },
+    { name: "q13", label: "Question 13" }
   ];
 
   for (const q of requiredRadios) {
@@ -744,19 +746,25 @@ function submitQuestionnaire() {
     }
   }
 
-  // 可选：如果 Q3 == yes 才显示 Q4，必须选择一个
-  const q3Answer = document.querySelector('input[name="q3"]:checked').value;
-  if (q3Answer === 'yes') {
-    const q4Checked = document.querySelectorAll('input[name="q4[]"]:checked');
-    if (q4Checked.length === 0) {
-      alert("Question 4 is required. Please select your option before submitting.");
+  // 可选：如果 Q4 == yes 才显示 Q5，必须选择一个
+  const q4Answer = document.querySelector('input[name="q4"]:checked').value;
+  if (q4Answer === 'yes') {
+    const q5Checked = document.querySelectorAll('input[name="q5[]"]:checked');
+    if (q5Checked.length === 0) {
+      alert("Question 5 is required. Please select your option before submitting.");
       return;
     }
   }
 
-  const q2Text = document.getElementById("q2").value.trim();
-  if (q2Text === "") {
-    alert("Question 2 is required. Please enter your response.");
+  const q1Text = document.getElementById("q1").value.trim();
+  if (q1Text === "") {
+    alert("Question 1 is required. Please enter your response.");
+    return;
+  }
+
+  const q3Text = document.getElementById("q3").value.trim();
+  if (q3Text === "") {
+    alert("Question 3 is required. Please enter your response.");
     return;
   }
 
@@ -778,22 +786,26 @@ function submitQuestionnaire() {
   const answers = [];
   answers.push("问卷调查结果：");
 
-  // 单选题 Q1
-  const q1 = document.querySelector('input[name="q1"]:checked');
-  answers.push("Q1: " + (q1 ? q1.value : "未作答"));
+  // Q1 文本题
+  const q1 = document.getElementById("q1").value;
+  answers.push("Q1: " + (q1 || "未填写"));
 
-  // Q2 文本题
-  const q2 = document.getElementById("q2").value;
-  answers.push("Q2: " + (q2 || "未填写"));
+  // 单选题 Q2
+  const q2 = document.querySelector('input[name="q2"]:checked');
+  answers.push("Q2: " + (q2 ? q2.value : "未作答"));
 
-  // Q3 是/否
-  const q3 = document.querySelector('input[name="q3"]:checked');
-  answers.push("Q3: " + (q3 ? q3.value : "未作答"));
+  // Q3 文本题
+  const q3 = document.getElementById("q3").value;
+  answers.push("Q3: " + (q3 || "未填写"));
 
-  // Q4 多选题（仅在 Q3 选“是”时才显示）
-  const q4 = document.querySelectorAll('input[name="q4[]"]:checked');
-  const q4_vals = Array.from(q4).map(c => c.parentElement.textContent.trim());
-  answers.push("Q4: " + (q4_vals.length ? q4_vals.join(", ") : "未作答"));
+  // Q4 是/否
+  const q4 = document.querySelector('input[name="q4"]:checked');
+  answers.push("Q4: " + (q4 ? q4.value : "未作答"));
+
+  // Q5 多选题（仅在 Q4 选“是”时才显示）
+  const q5 = document.querySelectorAll('input[name="q5[]"]:checked');
+  const q5_vals = Array.from(q5).map(c => c.parentElement.textContent.trim());
+  answers.push("Q5: " + (q5_vals.length ? q5_vals.join(", ") : "未作答"));
 
   // Q5 单选题
   //const q5 = document.querySelector('input[name="q5"]:checked');
@@ -819,13 +831,21 @@ function submitQuestionnaire() {
   const q10 = document.querySelector('input[name="q10"]:checked');
   answers.push("Q10: " + (q10 ? q10.value : "未作答"));
 
-  // Q11 文本
+  // Q11 单选
   const q11 = document.querySelector('input[name="q11"]:checked');
   answers.push("Q11: " + (q11 ? q11.value : "未作答"));
 
-  // Q12 文本
-  const q12 = document.getElementById("q12").value;
-  answers.push("Q12: " + (q12 || "未填写"));
+  // Q12 单选
+  const q12 = document.querySelector('input[name="q12"]:checked');
+  answers.push("Q12: " + (q12 ? q12.value : "未作答"));
+
+  // Q13 文本
+  const q13 = document.querySelector('input[name="q13"]:checked');
+  answers.push("Q13: " + (q13 ? q13.value : "未作答"));
+
+  // Q14 文本
+  const q14 = document.getElementById("q14").value;
+  answers.push("Q14: " + (q14 || "未填写"));
 
   // 然后将 taskData 添加进来
   answers.push("\n任务交互数据：");
