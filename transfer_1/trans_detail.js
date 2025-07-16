@@ -548,7 +548,7 @@ function openSendConfirmModal(receiver, network, amount) {
   }
 
   document.getElementById("sendConfirmModal").style.display = "block";
-  document.getElementById("sendConfirmOverlay").style.display = "block";
+  //document.getElementById("sendConfirmOverlay").style.display = "block";
   //}
 }
 
